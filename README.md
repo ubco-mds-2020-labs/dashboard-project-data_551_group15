@@ -9,5 +9,4 @@ By clicking directly on a particular province or territory or by selecting the d
 
 * **NOTE:** If possible we would also like to explore adding a feature so users can compare the yearly and cumulative GDP growth rate of different industrues and geographies.
 
-<img src=“sketch.png" width="300" height="300">
 ![Screenshot](sketch.png)
