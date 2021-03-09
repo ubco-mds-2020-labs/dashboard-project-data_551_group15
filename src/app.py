@@ -5,39 +5,80 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 
-app = dash.Dash(__name__, external_stylesheets=['dbc.themes.BOOTSTRAP'])
+from src import Visualizations as Vis
+from src import wrangling as wr
+
+# Prepare the inputs:
+minyear = int(min(wr.years))
+maxyear = int(max(wr.years))
+
+drop_options = []
+for i in wr.provinces:
+    temp = {"label": i, "value": i}
+    drop_options.append(temp)
+
+
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
-app.layout = dbc.Container([
-    html.H1("DATA551 Project APP"),
+app.layout = html.Div([
+    dbc.Row(
+        dbc.Col(
+            html.H1("DATA551 Project APP"),
+            width={"offset": 1}
+        )
+    ),
     dbc.Row([
         dbc.Col([
             html.Label([
-                'Select Province',
+                html.H5('Select Province:'),
                 dcc.Dropdown(
                     id="province",
-                    options=[{"label": "temp", "value": "temp"}],
-                    value="temp"
+                    options=drop_options,
+                    value="British Columbia",
+                    style={"width": "300px"}
                 )
-            ]),
-            html.Label([
-                "Select Year",
-                dcc.Slider(id="year", min=1990, max=2010, value=1990, marks={1990: '1990', 2010: '2010'})
             ])
-        ]),
+
+        ], width={"offset": 1, "width": 5}),
+
         dbc.Col([
-            dcc.Textarea(id="output")
-        ])
+            html.Label([
+                html.H5('Select Year:'),
+                dcc.Slider(
+                    id="year",
+                    min=minyear,
+                    max=maxyear,
+                    value=minyear,
+                    marks={minyear: str(minyear), maxyear: str(maxyear)},
+                    tooltip={"placement": "bottomLeft"}
+                )
+            ], style={"width": "300px"})
+        ], width={"offset": 1, "width": 5})
+    ]),
+    dbc.Row([
+        dbc.Col([
+            html.Iframe(
+                id="plot",
+                style={'border-width': '0', 'width': '1000px', 'height': '500px'}
+            )
+        ], width={"offset": 1, "width": 10})
     ])
+
+
+
 ])
 
 
 @app.callback(
-    Output("output", "value"),
-    Input("year", "value")
+    Output("plot", "srcDoc"),
+    Input("year", "value"),
+    Input("province", "value")
 )
-def update_output(input_value):
-    return str(input_value)
+def plt_total_gdp(year, province):
+    return Vis.plt_total_gdp(year, province)
+# def update_output(input_value):
+#     return str(input_value)
 
 
 if __name__ == '__main__':

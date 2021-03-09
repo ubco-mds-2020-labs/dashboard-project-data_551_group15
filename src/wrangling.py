@@ -31,6 +31,9 @@ gdp.rename(columns={"North American Industry Classification System (NAICS) 7 8":
 gdp['Percent Change'] = gdp.GDP.pct_change()
 gdp.loc[gdp.Year == 1997, "Percent Change"] = 0
 
+years = list(pd.unique(gdp.Year))
+provinces = list(pd.unique(gdp.Geography))
+
 # For geographical data:
 # import geopandas as gpd
 # can = gpd.GeoDataFrame.from_file("lpr_000b16a_e.shp")
@@ -42,4 +45,5 @@ gdp.loc[gdp.Year == 1997, "Percent Change"] = 0
 
 # test the output
 if __name__ == "__main__":
-    print(gdp.head())
+    print(years)
+    print(provinces)
