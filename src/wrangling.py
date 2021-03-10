@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load the data
-gdp = pd.read_csv('../data/GDP.csv', skiprows=[i for i in range(0, 4)])
+gdp = pd.read_csv('data/GDP.csv', skiprows=[i for i in range(0, 4)])
 
 # Handling null values and deleting non usable information.
 gdp.drop(gdp.index[0], inplace=True)
