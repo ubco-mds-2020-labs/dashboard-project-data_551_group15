@@ -55,15 +55,15 @@ def plt_indus_contri(year, Geography):
 
 
 def plt_province_gdp(year):
-    industry_gdp = alt.Chart(gdp, title="GDP Industry Contribution").mark_bar().encode(
-        x=alt.X('sum(GDP):Q', title='GDP (dollars x 1,000,000)', axis=alt.Axis(format='$,f', labelFontSize=10)),
-        y=alt.Y('Industry:O', sort='-x'),
+    geo_gdp = alt.Chart(gdp, title="GDP Province Contribution").mark_bar().encode(
+        y=alt.Y('sum(GDP):Q', title='GDP (dollars x 1,000,000)', axis=alt.Axis(format='$,f', labelFontSize=10)),
+        x=alt.X('Geography:O', sort='-y', title=None, axis=alt.Axis(labelFontSize=10, labelAngle=-90)),
         color=alt.Color('sum(GDP)', title='Total GDP', scale=alt.Scale(scheme='lighttealblue')),
-        tooltip=[alt.Tooltip('Industry'),
+        tooltip=[alt.Tooltip('Geography'),
                  alt.Tooltip('sum(GDP):Q', format='$,.2f', title='Total GDP $')]).transform_filter(
-        alt.FieldEqualPredicate(field='Geography', equal=Geography)).transform_filter(
-        alt.FieldEqualPredicate(field='Year', equal=year)).configure_view(strokeOpacity=0)
-    return industry_gdp
+        alt.FieldEqualPredicate(field='Year', equal=year)).configure_view(strokeOpacity=0).properties(height=400,
+                                                                                                      width=800)
+    return geo_gdp.to_html()
 
 
 # test

@@ -40,7 +40,7 @@ app.layout = html.Div([
                 )
             ])
 
-        ], width={"offset": 1, "width": 5}),
+        ], width={"offset": 2, "width": 5}),
 
         dbc.Col([
             html.Label([
@@ -54,15 +54,37 @@ app.layout = html.Div([
                     tooltip={"placement": "bottomLeft"}
                 )
             ], style={"width": "300px"})
-        ], width={"offset": 1, "width": 5})
+        ], width={"offset": 2, "width": 5})
     ]),
     dbc.Row([
         dbc.Col([
-            html.Iframe(
-                id="plot",
-                style={'border-width': '0', 'width': '1000px', 'height': '500px'}
-            )
-        ], width={"offset": 1, "width": 10})
+            dbc.Tabs([
+                dbc.Tab([
+                    html.Iframe(
+                        id="total",
+                        style={'border-width': '0', 'width': '1000px', 'height': '500px'}
+                    )
+                ], label="Total GDP"),
+                dbc.Tab([
+                    html.Iframe(
+                        id="hist",
+                        style={'border-width': '0', 'width': '1000px', 'height': '500px'}
+                    )
+                ], label="History Evolution"),
+                dbc.Tab([
+                    html.Iframe(
+                        id="prov",
+                        style={'border-width': '0', 'width': '1000px', 'height': '800px'}
+                    )
+                ], label="Province Contribution"),
+                dbc.Tab([
+                    html.Iframe(
+                        id="indus",
+                        style={'border-width': '0', 'width': '1000px', 'height': '800px'}
+                    )
+                ], label="Industry Contribution")
+            ])
+        ], width={"offset": 2, "width": 10})
     ])
 
 
@@ -71,14 +93,36 @@ app.layout = html.Div([
 
 
 @app.callback(
-    Output("plot", "srcDoc"),
+    Output("total", "srcDoc"),
     Input("year", "value"),
     Input("province", "value")
 )
 def plt_total_gdp(year, province):
     return Vis.plt_total_gdp(year, province)
-# def update_output(input_value):
-#     return str(input_value)
+
+@app.callback(
+    Output("hist", "srcDoc"),
+    Input("year", "value"),
+    Input("province", "value")
+)
+def plt_historical_gdp(year, province):
+    return Vis.plt_historical_gdp(year, province)
+
+
+@app.callback(
+    Output("prov", "srcDoc"),
+    Input("year", "value"),
+)
+def plt_province_gdp(year):
+    return Vis.plt_province_gdp(year)
+
+@app.callback(
+    Output("indus", "srcDoc"),
+    Input("year", "value"),
+    Input("province", "value")
+)
+def plt(year, province):
+    return Vis.plt_indus_contri(year, province)
 
 
 if __name__ == '__main__':
