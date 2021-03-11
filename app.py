@@ -17,7 +17,6 @@ for i in wr.provinces:
     temp = {"label": i, "value": i}
     drop_options.append(temp)
 
-
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
@@ -58,37 +57,36 @@ app.layout = html.Div([
     ]),
     dbc.Row([
         dbc.Col([
-            dbc.Tabs([
-                dbc.Tab([
+            dbc.Row([
+                dbc.Col([
                     html.Iframe(
                         id="total",
-                        style={'border-width': '0', 'width': '1000px', 'height': '500px'}
-                    )
-                ], label="Total GDP"),
-                dbc.Tab([
+                        style={'border-width': '0', 'width': '400px', 'height': '250px'}
+                    ),
+                ], width=6),
+                dbc.Col([
                     html.Iframe(
                         id="hist",
-                        style={'border-width': '0', 'width': '1000px', 'height': '500px'}
-                    )
-                ], label="History Evolution"),
-                dbc.Tab([
+                        style={'border-width': '0', 'width': '400px', 'height': '250px'}
+                    ),
+                ], width=6)
+            ]),
+            dbc.Row([
+                dbc.Col([
                     html.Iframe(
                         id="prov",
-                        style={'border-width': '0', 'width': '1000px', 'height': '800px'}
+                        style={'border-width': '0', 'width': '800px', 'height': '500px'}
                     )
-                ], label="Province Contribution"),
-                dbc.Tab([
-                    html.Iframe(
-                        id="indus",
-                        style={'border-width': '0', 'width': '1000px', 'height': '800px'}
-                    )
-                ], label="Industry Contribution")
-            ])
-        ], width={"offset": 2, "width": 10})
+                ])
+            ]),
+        ], width={"offset": 1, "width": 5}),
+        dbc.Col([
+            html.Iframe(
+                id="indus",
+                style={'border-width': '0', 'width': '800px', 'height': '800px'}
+            )
+        ], width={"width": 6})
     ])
-
-
-
 ])
 
 
@@ -99,6 +97,7 @@ app.layout = html.Div([
 )
 def plt_total_gdp(year, province):
     return Vis.plt_total_gdp(year, province)
+
 
 @app.callback(
     Output("hist", "srcDoc"),
@@ -115,6 +114,7 @@ def plt_historical_gdp(year, province):
 )
 def plt_province_gdp(year):
     return Vis.plt_province_gdp(year)
+
 
 @app.callback(
     Output("indus", "srcDoc"),
